@@ -21,11 +21,18 @@ Route::get('/admin', 'Backend\AdminController@index')->name('admin');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('post/pdf_test','PostController@pdf_stream');
+Route::get('generate-pdf', 'PostController@pdfview')->name('generate-pd');
+
 Route::group( ['domain'=>'', 'prefix' => '' , 'middleware'=>'auth'] , function() {
 
 	Route::resource('post','PostController', ['names'=>[]] );
 	Route::resource('tag','TagController');
-	Route::resource('category','CategoryController');
 	Route::get('post','PostController@index');
 
 });
+
+
+Route::resource('category','CategoryController');
+
+
