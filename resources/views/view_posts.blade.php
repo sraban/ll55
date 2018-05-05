@@ -5,7 +5,11 @@
     <div class="row">
         <div class="col-md-12 col-md-offset-2-srabn">
             <div class="panel panel-default">
-                <div class="panel-heading">All Posts</div>
+                <div class="panel-heading">
+                All Posts
+
+                <a class="btn" href="{{url('post/create')}}"> Add Post </a>
+                </div>
 
                 <div class="panel-body">
                     @if (session('status'))
@@ -15,6 +19,8 @@
                     @endif
 
                     
+
+
                     <table class="table bordered">
                       <tr>
                         <th>ID</th>
@@ -39,19 +45,21 @@
                         <td>{{$p->slug}}</td>
                         <td>{{$p->meta_description}}</td>
                         <td>{{$p->files}}</td>
-                        <td>{{ $p->categories->title }}</td>
+                        <td>{{ $p->categories->title or '' }}</td>
                         <td>
                           @foreach( $p->tags as $t )
                             {{ $t->title }},<br>
                           @endforeach
                         </td>
                         <td>{{$p->related_post}}</td>
-                        <td>{{$p->created_at}}</td>
-                        <td>Edit</td>
+                        <td>{{$p->created_at->format('d/m/Y H:i')}}</td>
+                        <td>
+                              <a href="{{ url('post/'.$p->id) }}">Show</a>
+                              <a href="{{url('post/'.$p->id.'/edit')}}">Edit</a> 
+                        </td>
                         <td>
 
-                      
-
+                
                         <form method="post" action="{{ action('PostController@destroy', $p->id ) }}">
                           {{ csrf_field() }}
                           {{ method_field('Delete') }}
@@ -75,7 +83,7 @@
 
                     </table>
 
-                  
+                  {{ $post->links() }}
 
 
                 </div>

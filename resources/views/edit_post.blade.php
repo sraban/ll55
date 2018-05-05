@@ -15,38 +15,76 @@
                     @endif
 
                     
+                    @if( count($errors->post_form) > 0 )
+                        <div class="alert alert-danger">
+                          <ul>
+                            @foreach( $errors->post_form->all() as $error )
+                              <li>{{ $error }}</li>
+                            @endforeach
+                          </ul>
+                        </div>
+                    @endif
+                    
 
-                        <form>
+                       
+          <form method="post" enctype="multipart/form-data" action="{{ route('post.update', $post->id ) }}" >
+          {{csrf_field()}}{{method_field('PUT')}}
             <div class="form-group">
-              <label for="exampleFormControlInput1">Email address</label>
-              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              <label for="exampleFormControlInput1">Name</label>
+              <input type="text" name="title" class="form-control" value="{{ (old('title')) ? old('title') : $post->title   }}" id="exampleFormControlInput1" placeholder="">
             </div>
+
+
             <div class="form-group">
-              <label for="exampleFormControlSelect1">Example select</label>
-              <select class="form-control" id="exampleFormControlSelect1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+              <label for="exampleFormControlInput2">Slug</label>
+              <input type="text" readonly name="slug" value="@if(old('slug')) {{old('slug')}} @else {{ $post->slug }}@endif" class="form-control" id="exampleFormControlInput2" placeholder="">
+            </div>
+
+
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Category</label>
+              <select class="form-control" name="category" id="exampleFormControlSelect1">
+                @foreach($category as $k => $c )
+                <option {{ ((old('category') == $k) ? 'selected': (($post->category_id == $k) ? 'selected':'') ) }} value="{{ $k }}">{{ $c }}</option>
+                @endforeach
               </select>
             </div>
+
             <div class="form-group">
-              <label for="exampleFormControlSelect2">Example multiple select</label>
-              <select multiple class="form-control" id="exampleFormControlSelect2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+              <label for="exampleFormControlSelect2">Tags</label>
+              <select multiple class="form-control" id="exampleFormControlSelect2" name="tags[]">
+                @foreach($tag as $k => $c )
+                <option @if( old('tags')) {{ ( collect( old('tags') )->contains($k)  ? 'selected' : '' ) }} @else {{ ( $db_old_tags->contains($k)  ? 'selected' : '' ) }} @endif value="{{ $k }}">{{ $c }}</option>
+                @endforeach
+              </select>
+            </div>
+
+            
+            <div class="form-group">
+              <label for="exampleFormControlSelect3">Related Post</label>
+              <select multiple class="form-control" id="exampleFormControlSelect3" name="related_post[]">
+                @foreach($related_post as $k => $c )
+                <option @if( old('related_post') ) {{ in_array($k, old('related_post') ) ? 'selected' : '' }} @else {{ in_array($k, json_decode($post->related_post) ) ? 'selected' : '' }}  @endif value="{{ $k }}">{{ $c }}</option>
+                @endforeach
               </select>
             </div>
 
             <div class="form-group">
-              <label for="exampleFormControlFile1">Example file input</label>
-              <input type="file" class="form-control-file" id="exampleFormControlFile1">
+              <label for="exampleFormControlFile1">Files</label>
+              <input type="file" name="files[]" multiple class="form-control-file" id="exampleFormControlFile1">
+              {{ $post->files }}
             </div>
 
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Description</label>
+                <textarea name="meta_description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{ (old('meta_description') ? old('meta_description') : ($post->meta_description ? $post->meta_description : '' ) )  }}</textarea>
+            </div>
+
+            
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <!-- 
             <fieldset class="form-group">
                 <div class="row">
                   <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
@@ -83,20 +121,12 @@
                     </label>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <div class="form-group">
-                <label for="exampleFormControlTextarea1">Example textarea</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-              </div>
-
-            
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
+              
 
 
           </form>
-
 
 
                 </div>
