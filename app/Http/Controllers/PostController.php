@@ -83,11 +83,13 @@ class PostController extends Controller
         if ( $validator->fails() ) {
 
             //$errors = $validator->errors(); dd( $errors );
+            
             /*
             if ($errors->has('email')) {
             foreach ($errors->get('email') as $message) {
                 //
-            }}*/
+            }}
+            */
 
             return redirect('post/create')
                         ->withErrors($validator, 'post_form')

@@ -35,8 +35,8 @@
 
 {{--  dump(old('tags.0'))  --}}
 
-            <form method="post" action="{{ route('post.create') }}" enctype = "multipart/form-data">
-            {{csrf_field()}} {{method_field('post')}}
+            <form method="post" action="{{ route('post.store') }}" enctype="multipart/form-data">
+            {{csrf_field()}}
             <div class="form-group">
               <label for="exampleFormControlInput1">Name</label>
               <input type="text" name="title" class="form-control" value="{{ old('title') }}" id="exampleFormControlInput1" placeholder="">
